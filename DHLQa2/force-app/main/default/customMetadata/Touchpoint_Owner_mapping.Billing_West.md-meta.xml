@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Billing - West</label>
+    <protected>false</protected>
+    <values>
+        <field>Functional_Head_Email__c</field>
+        <value xsi:type="xsd:string">sanjay.jaiswal@dhl.com</value>
+    </values>
+    <values>
+        <field>Region__c</field>
+        <value xsi:type="xsd:string">West</value>
+    </values>
+    <values>
+        <field>Touchpoint_Name__c</field>
+        <value xsi:type="xsd:string">Billing</value>
+    </values>
+    <values>
+        <field>Username__c</field>
+        <value xsi:type="xsd:string">sanjay.patel@dhl.com.qa</value>
+    </values>
+</CustomMetadata>

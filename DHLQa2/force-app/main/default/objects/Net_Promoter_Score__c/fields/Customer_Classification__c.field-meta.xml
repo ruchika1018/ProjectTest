@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Customer_Classification__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(    OR(TEXT(NPA_Rating__c)== &#39;9&#39;,TEXT(NPA_Rating__c) == &#39;10&#39;) , &#39;Promoter&#39;,  IF(  OR(TEXT(NPA_Rating__c) == &#39;8&#39;,TEXT(NPA_Rating__c) == &#39;7&#39;, TEXT(NPA_Rating__c) == &#39;6&#39; ) , &#39;Passive&#39;, &#39;Detractor &#39;) )</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Customer Classification</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

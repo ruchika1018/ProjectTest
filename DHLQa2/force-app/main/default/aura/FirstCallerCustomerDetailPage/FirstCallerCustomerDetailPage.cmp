@@ -1,0 +1,86 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+	
+    
+    <aura:attribute name="recordId" type="String" />
+   <!--<aura:handler name="init" value="{!this}" action="{!c.doInit}" />-->
+    
+       	<div class="slds-card slds-m-left_x-large">
+        <div class="slds-box slds-p-around_medium ">
+            <div class="slds-grid slds-gutters">
+                <div class="slds-col">
+                    <c:CollapsibleSection recordId="{!v.recordId}"/> 
+                </div>                
+            </div>
+        <!--section 2 start-->  
+    <div class="slds-section slds-is-open" aura:id="CustomerDetailsSection">
+        <!--section header-->
+        <h3 class="slds-section__title">
+            <button aria-controls="PrevCallDetails" class="slds-button slds-section__title-action slds-m-left_medium slds-m-right_medium">
+                <span onclick="{!c.toggleSection}" data-auraId="CustomerDetailsSection">
+                    <lightning:icon iconName="utility:switch"
+                                    size="x-small"
+                                    class="slds-section__title-action-icon slds-button__icon_left"
+                                    alternativeText="button icon" 
+                                    />
+                </span>
+                <span class="slds-truncate" title="Previous Call Details">Customer Details</span>
+            </button>
+        </h3>
+        <!--section body-->
+        <div class="slds-section__content slds-m-left_medium slds-m-right_medium" id="CustDetails">
+            <lightning:recordViewForm recordId="{!v.recordId}" objectApiName="Customer__c">
+            <div class="slds-box slds-p-around_medium">
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col slds-m-left_x-large">
+                        <span class="slds-m-left_x-medium"><label class="slds-form-element__label slds-m-left_x-medium">Customer Number</label><br/>
+                            <lightning:outputField fieldName="Name" variant="label-hidden"/></span>
+                        <span class="slds-m-left_x-medium"><lightning:outputField fieldName="Customer_Name__c" class="disableLink slds-m-left_x-medium"/></span>
+                    </div>
+                    
+                    <div class="slds-col">
+                        <span><lightning:outputField fieldName="Contact_Mobile__c" class="disableLink"/></span>
+                        <span><lightning:outputField fieldName="Contact_Email__c" class="disableLink"/></span>
+                    </div>
+                    <div class="slds-col">
+                        <span><label class="slds-form-element__label">Touchpoint</label><br/>
+                            <lightning:outputField fieldName="RecordTypeId" class="disableLink" variant="label-hidden"/></span>
+                    </div>
+                    <div class="slds-col"/>
+                </div>
+             </div>
+           
+        </lightning:recordViewForm>
+        </div>
+    </div>
+    <!--section 2 end-->
+    <!--section 3 start-->  
+    <div class="slds-section slds-is-open" aura:id="NPADetailsSection">
+        <!--section header-->
+        <h3 class="slds-section__title">
+            <button aria-controls="PrevCallDetails" class="slds-button slds-section__title-action slds-m-left_medium slds-m-right_medium">
+                <span onclick="{!c.toggleSection}" data-auraId="NPADetailsSection">
+                    <lightning:icon iconName="utility:switch"
+                                    size="x-small"
+                                    class="slds-section__title-action-icon slds-button__icon_left"
+                                    alternativeText="button icon" 
+                                    />
+                </span>
+                <span class="slds-truncate" title="NPA Details">NPA Details</span>
+            </button>
+        </h3>
+        <!--section body-->
+        <div class="slds-section__content slds-m-left_medium slds-m-right_medium" id="NpaDetails">
+            <div class="slds-box slds-p-around_medium">
+              <div class="slds-grid slds-gutters">
+                <div class="slds-col">
+                	<c:CaptureNPADetails ParentId="{!v.recordId}"/>
+                </div>
+              </div>
+            </div>
+        
+        </div>
+    </div>
+    <!--section 3 end-->
+        </div>
+        </div>
+</aura:component>

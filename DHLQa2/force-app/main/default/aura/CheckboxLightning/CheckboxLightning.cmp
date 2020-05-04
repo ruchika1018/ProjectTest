@@ -1,0 +1,12 @@
+<aura:component implements="flexipage:availableForAllPageTypes" controller= "ConfigureTouchpoint_Controller" access="global" >
+	<aura:attribute name="options" type="List" />
+    <aura:attribute name="value" type="List" />
+    <aura:attribute name="touchPoint" type="String" />
+	<aura:registerEvent name="touchpointValue" type="c:getTouchpointValue"/>
+    <aura:attribute name="Usernam" type="String" />
+    <aura:handler name = "init" value = "{!this}" action = "{!c.doInit}"/>
+    <lightning:checkboxGroup name="Checkbox Group"
+                             options="{! v.options }"
+                             value="{! v.value }"
+                             onchange="{! c.handleChange }" />
+</aura:component>

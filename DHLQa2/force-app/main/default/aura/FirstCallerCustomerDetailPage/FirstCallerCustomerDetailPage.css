@@ -1,0 +1,7 @@
+.THIS .disableLink{
+    pointer-events: none;
+    cursor: default;
+    text-decoration: none;
+    display: inline-block;
+    color: inherit;
+}

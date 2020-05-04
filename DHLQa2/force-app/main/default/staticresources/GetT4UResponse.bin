@@ -1,0 +1,68 @@
+{
+    "t4u_response": {
+        "status_code": 200,
+        "trip_no": "5100026055",
+        "vehicle_no": "HR55AD2949",
+        "customer_id": "00000000000000000000000005264485192",
+        "trip_type": "Dry",
+        "vehicle_type": "32ft MXL DC",
+        "route_id": "MAM_MGBID_301_001_SH_DEL_413_001_SH_NAG_023_001_MAM_MALR_160_001_4560",
+        "origin_city": "MANDI GOBINDGARH",
+        "destination_city": "MALUR",
+        "Leg_details": [
+            {
+                "leg_seq": 1,
+                "leg_name": "MAM_MGBID_301_001_SH_DEL_413_001",
+                "leg_STD": "2019-11-28 21:00:00.0",
+                "leg_STA": "2019-11-28 21:00:00.0",
+                "leg_ATD": "2019-12-01 16:35:16.0",
+                "leg_ATA": "2019-11-30 07:40:48.0"
+            },
+            {
+                "leg_seq": 2,
+                "leg_name": "SH_DEL_413_001_SH_NAG_023_001",
+                "leg_STD": "2019-11-28 21:00:00.0",
+                "leg_STA": "2019-11-30 14:03:00.0",
+                "leg_ATD": "",
+                "leg_ATA": "2019-12-01 16:12:58.0"
+            },
+            {
+                "leg_seq": 3,
+                "leg_name": "SH_NAG_023_001_MAM_MALR_160_001",
+                "leg_STD": "2019-11-30 14:33:00.0",
+                "leg_STA": "2019-12-02 01:00:00.0",
+                "leg_ATD": "",
+                "leg_ATA": "2019-12-03 00:35:59.0"
+            }
+        ],
+        "planned_tat": "76:00:00",
+        "actual_tat": "",
+        "trip_actuals": [
+            {
+                "STP": "2019-11-28 15:00:00.0",
+                "STD": "2019-11-28 21:00:00.0",
+                "STA": "2019-12-02 01:00:00.0",
+                "ATP": "2019-11-28 15:26:26.0",
+                "ATD": "2019-11-29 21:20:46.0",
+                "ATA": "2019-12-03 00:35:59.0"
+            }
+        ],
+        "customer_name": "Modern Automotives Limited",
+        "current_location": "Inside MAM_MALR_160_001,MALUR,Karnataka,IN",
+        "latitude": "12.984969139099121",
+        "longitude": "77.92489624023438",
+        "STAwrtATD": "2019-12-03 01:20:46.0",
+        "last_comm_timestamp": "2019-12-05 00:18:29.13",
+        "driver_details": [
+            {
+                "driver1_name": null,
+                "driver1_id": 0,
+                "driver1_contact": null,
+                "driver2_name": null,
+                "driver2_id": 0,
+                "driver2_contact": null
+            }
+        ],
+        "is_gps_communicating": "No"
+    }
+}

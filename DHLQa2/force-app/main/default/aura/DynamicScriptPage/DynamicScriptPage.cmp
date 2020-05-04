@@ -1,0 +1,98 @@
+<aura:component controller="DynamicScriptPage_Controller" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+	<aura:handler name = "init" value = "{!this}" action = "{!c.doInit}"/>
+    
+    <aura:attribute name = "scriptData" type = "List" />
+    <aura:attribute name="isModalOpen" type="boolean" default="false"/>
+    
+    <div class="slds-card">
+        <span class="slds-text-heading_large"> Caller Script Page </span>   
+        <br/>
+        <br/>
+        <lightning:accordion aura:id="accordion">
+            <aura:iteration items="{!v.scriptData}" var="data">
+                <lightning:accordionSection label="{!data.Touchpoint_Name__c}">
+                    <aura:set attribute="body">
+                       <lightning:inputRichText value="{!data.Script__c}" 
+                                                formats="['']" 
+                                                placeholder="Type something interesting" 
+                       />
+                    </aura:set>
+                </lightning:accordionSection>
+            </aura:iteration>
+        </lightning:accordion>
+    
+       
+        <!--table style="width :100%;" class="slds-table">
+            <thead>
+                <tr>
+                    <th class="" scope="col">
+                        <span>
+                            <h2> <div  title="1st Caller Name">Touchpoint Name</div> </h2>
+                        </span>
+                    </th>
+                    <th class="" scope="col">
+                        <h2> <div title="Touchpoints">Script</div> </h2>
+                    </th>
+                </tr>
+            </thead>
+            <aura:iteration items="{!v.scriptData}" var="data">
+                    <tr>
+                        <td style="width:30%;">
+                            <div class="slds-truncate">
+                                <b>{!data.Touchpoint_Name__c}</b>
+                            </div>
+                        </td>
+                        <td  style="width:70%;">
+                           <br/>
+                           lightning:textarea value="{!data.Script__c}" / 
+                           lightning:inputRichText value="{!data.Script__c}" formats="['bold', 'italic', 'underline']" placeholder="Type something interesting" />
+                            <lightning:button label = " View Script " onclick="{!c.openModal}"/
+                           
+                           
+                        </td>
+                    </tr>
+                </aura:iteration>
+        </table -->
+        <br />
+        <center>
+            <div>
+                <lightning:button label="Save" title="Save action" onclick="{!c.openModal}"/>
+            </div>
+    	</center>
+        <br />
+    </div>
+    <div class="slds-m-around_xx-large">
+        <!--Use aura:if tag to display/hide popup based on isModalOpen value-->  
+        <aura:if isTrue="{!v.isModalOpen}">
+             
+            <!-- Modal/Popup Box starts here-->
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- Modal/Popup Box Header Starts here-->
+                    <header class="slds-modal__header">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModel }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Do you want to save ?</h2>
+                    </header>
+                    <!--Modal/Popup Box Body Starts here-->
+                    
+                    <!--Modal/Popup Box Footer Starts here-->
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral"
+                                          label="Cancel"
+                                          title="Cancel"
+                                          onclick="{! c.closeModel }"/>
+                        <lightning:button variant="brand"
+                                          label="OK"
+                                          title="OK"
+                                          onclick="{!c.saveData}"/>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </aura:if>
+    </div>
+</aura:component>

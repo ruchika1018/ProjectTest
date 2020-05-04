@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>Customer_Object_Api_Name</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Customer Object Api Name</shortDescription>
+        <value>Customer__c</value>
+    </labels>
+    <labels>
+        <fullName>DHL_Customer_Customer_table_Call_Attempts_Label</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>DHL_Customer_Customer_table_Call_Attempts_Label</shortDescription>
+        <value>Call Attempts</value>
+    </labels>
+    <labels>
+        <fullName>DHL_Customer_Customer_table_Call_Not_Attempted_Label</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>DHL_Customer_Customer_table_Call_Not_Attempted_Label</shortDescription>
+        <value>Call not attempted</value>
+    </labels>
+    <labels>
+        <fullName>DHL_Customer_Customer_table_Call_Status_Label</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>DHL_Customer_Customer_table_Call_Status_Label</shortDescription>
+        <value>Call Status</value>
+    </labels>
+    <labels>
+        <fullName>DHL_Customer_Customer_table_Created_Date_Filter</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>DHL_Customer_Customer_table_Created_Date_Filter</shortDescription>
+        <value>THIS_MONTH</value>
+    </labels>
+    <labels>
+        <fullName>DHL_Customer_Target_table_Billing_Label</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>DHL_Customer_Target_table_Billing_Label</shortDescription>
+        <value>Billing</value>
+    </labels>
+    <labels>
+        <fullName>DHL_Customer_Target_table_Customer_Excellence_Label</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>DHL_Customer_Target_table_Customer_Excellence_Label</shortDescription>
+        <value>CE</value>
+    </labels>
+    <labels>
+        <fullName>DHL_Customer_Target_table_Key_Label</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>DHL_Customer_Target_table_Key_Label</shortDescription>
+        <value>Key (6/touchpoint)</value>
+    </labels>
+    <labels>
+        <fullName>DHL_Customer_Target_table_Non_Key_Label</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>DHL_Customer_Target_table_Non_Key_Label</shortDescription>
+        <value>Enterprise (30/touchpoint)</value>
+    </labels>
+    <labels>
+        <fullName>DHL_Customer_Target_table_Operations_Label</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>DHL_Customer_Target_table_Operations_Label</shortDescription>
+        <value>Operations</value>
+    </labels>
+    <labels>
+        <fullName>DHL_Customer_Target_table_Order_Management_Label</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>DHL_Customer_Target_table_Order_Management_Label</shortDescription>
+        <value>OM</value>
+    </labels>
+    <labels>
+        <fullName>DHL_Customer_Target_table_Sales_Label</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>DHL_Customer_Target_table_Sales_Label</shortDescription>
+        <value>Sales</value>
+    </labels>
+    <labels>
+        <fullName>Randomizer_Query_Result_Limit</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Randomizer Query Result Limit</shortDescription>
+        <value>2000</value>
+    </labels>
+</CustomLabels>

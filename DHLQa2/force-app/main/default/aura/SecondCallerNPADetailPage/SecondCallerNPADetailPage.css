@@ -1,0 +1,16 @@
+.THIS .slds-col{
+    width:40%;
+}
+
+/*
+.THIS label.slds-form-element__label {
+    display: none;
+}*/
+
+.THIS .disableLink{
+    pointer-events: none;
+    cursor: default;
+    text-decoration: none;
+    display: inline-block;
+    color: inherit;
+}

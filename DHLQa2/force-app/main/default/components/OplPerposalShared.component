@@ -1,0 +1,76 @@
+<apex:component access="global" controller="OplPerposalSharedController">
+ <apex:attribute name="OpptyId" type="String" description="Opportunity Id" assignTo="{!oppId}" access="global"/>   
+<html>
+<head>
+    <style>
+        table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        }
+        th, td {
+        padding: 5px;
+        text-align: left;    
+        }
+    </style>
+</head>
+<body>
+    
+    <p>Dear Pricing Team</p>
+    <p>Given Account is under <b> Proposal to be Shared </b> stage with below details.</p>
+    
+    <table style="width:100%">
+        <tr>
+            <td colspan="6"><b>Account Name :</b> 
+                {!opp.Account.name}
+            </td>
+            
+        </tr>
+        <tr >
+            <td colspan="6"><b>Account Owner :</b>
+                {!opp.Account.owner.name}
+            </td>
+            
+        </tr>
+         <tr >
+            <td colspan="6"><b>Industry Type :</b>
+                {!opp.Account.DHL_Industry__c}
+            </td>
+            
+        </tr>
+        <tr>
+            <th>Sl No.</th>
+            <th>Origin</th>
+            <th>Destination</th>
+            <th>Business Type</th>
+            <th>Vehicle Type</th>
+            <th>Number of Trips</th>
+            <th>Origin City</th>
+            <th>Destination City</th>
+            <th>Touchpoint City</th>
+            <th>Trip Type</th>
+        </tr>
+        <apex:variable var="count" value="{!1}"   />
+        <apex:repeat value="{!oppLine}" var="o" id="theRepeat">
+            <tr>
+                <td>{!count}</td>
+                <td>{!o.DHL_Origin__c}</td>
+                <td>{!o.DHL_Destination__c}</td>
+                <td>{!o.opportunity.DHL_Business_Type__c}</td>
+                <td>{!o.product2.name}</td>
+                <td>{!o.Quantity}</td>
+                <td>{!o.DHL_OriginCity__c}</td>
+                <td>{!o.DHL_DestinationCity__c}</td>
+                <td>{!o.DHL_TouchpointCity__c}</td>
+                <td>{!o.Trip_type__c}</td>
+            </tr>
+            <apex:variable value="{!count+1}" var="count"/>
+        </apex:repeat>
+        
+    </table>
+    
+    <p>Please proceed with Pricing Formalities.</p>
+    <p style="font-style:italic;">“<b>Please Note:</b> Kindly share Pricing Details for Lanes and Vehicle Provided above, for any other request which is not in above list Opportunity needs to be updated in SFDC with Lanes and Vehicle type along with other required details.”</p>
+    
+</body>
+</html>
+</apex:component>

@@ -1,0 +1,15 @@
+.THIS.customRadioCls .slds-form-element__control .slds-radio{
+    display : inline-block !important;
+} 
+
+.THIS .setwidth{
+    width: 50%;
+}
+
+.THIS.displayMsg {
+    display:block;
+}
+
+.THIS.hideMsg {
+    display:none;
+}

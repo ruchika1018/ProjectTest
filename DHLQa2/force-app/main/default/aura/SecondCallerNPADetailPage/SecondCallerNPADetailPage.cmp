@@ -1,0 +1,641 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" 
+                access="global" controller="SecondCallerNPADetailPageController">
+<aura:attribute name="ParentId" 	  type="Id"/>
+<aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="isEmailTemplateOpen" type="Boolean" default="false" />
+    <aura:attribute name="isSendEmail"	 type="Boolean" default="false" />
+	<aura:attribute name="customerEmailHasValue" type="Boolean"  default="false" />
+    <aura:attribute name="renderSendEmailButton" type="Boolean"  default="false" />
+    <aura:attribute name="renderReassignOwner" 	 type="Boolean"  default="true" />
+
+    <aura:attribute name="customerEmail" 		 type="String"  default="false" />
+
+	<aura:attribute name="showSendEmailButton" type="String"  default="false" />    
+
+    <aura:attribute name="DisplayRscSection" type="Boolean" default="false" />
+    <aura:attribute name="isSaved" type="Boolean" default="false" />
+    <aura:attribute name="sc1Sec" type="Boolean" default="false" />
+    <aura:attribute name="sc2Sec" type="Boolean" default="false" />
+
+    <aura:attribute name="sc3Sec" type="Boolean" default="false" />
+    <aura:attribute name="isSc1cb" type="Boolean" default="false" />
+    <aura:attribute name="isSc2cb" type="Boolean" default="false" />
+    <aura:attribute name="isSc3cb" type="Boolean" default="false" />
+    <aura:attribute name="rsc1Sec" type="Boolean" default="false" />
+    <aura:attribute name="rsc2Sec" type="Boolean" default="false" />
+    <aura:attribute name="rsc3Sec" type="Boolean" default="false" />
+    <aura:attribute name="isRsc1cb" type="Boolean" default="false" />
+    <aura:attribute name="isRsc2cb" type="Boolean" default="false" />
+    <aura:attribute name="isRsc3cb" type="Boolean" default="false" />
+    <aura:attribute name="isChange" type="Boolean" default ="false" />
+    <aura:attribute name="hideSave" type="Boolean" default ="true" />
+    <aura:attribute name="isOpen"   type="Boolean" default="false" />
+    
+    <aura:attribute name="sc1callBackdateValidationError" type="Boolean" default = "false"/>
+    <aura:attribute name="sc2callBackdateValidationError" type="Boolean" default = "false"/>
+    <aura:attribute name="sc3callBackdateValidationError" type="Boolean" default = "false"/>
+    <aura:attribute name="rsc1callBackdateValidationError" type="Boolean" default = "false"/>
+    <aura:attribute name="rsc2callBackdateValidationError" type="Boolean" default = "false"/>
+    <aura:attribute name="rsc3callBackdateValidationError" type="Boolean" default = "false"/>
+    
+    <aura:attribute name="sc1StatusHasValue" type="Boolean" default ="false" />
+    <aura:attribute name="sc2StatusHasValue" type="Boolean" default ="false" />
+    <aura:attribute name="sc3StatusHasValue" type="Boolean" default ="false" />
+    <aura:attribute name="rsc1StatusHasValue" type="Boolean" default ="false" />
+    <aura:attribute name="rsc2StatusHasValue" type="Boolean" default ="false" />
+    <aura:attribute name="rsc3StatusHasValue" type="Boolean" default ="false" />
+    
+   	<aura:attribute name="isReassignCom1" type="Boolean" default="true" />
+    <aura:attribute name="isReassignCom2" type="Boolean" default="true" />
+	<aura:attribute name="isReassignCom3" type="Boolean" default="true" />
+	<aura:attribute name="isReassignCom4" type="Boolean" default="true" />
+	<aura:attribute name="isReassignCom5" type="Boolean" default="true" />
+    
+    <aura:handler name="ReassignedValue" event="c:ReassignedValue" action="{!c.handleComponentEvent}"/>
+	<aura:attribute name="isDataChanged"  type="Boolean" default="false"/>
+   
+    <aura:if isTrue = "{!v.isEmailTemplateOpen}" >
+    	<c:NpaSendEmail isEmailTemplateOpen = "{!v.isEmailTemplateOpen}" email = "{!v.customerEmail}"/>
+    </aura:if>
+<div class="slds-card slds-m-left_x-large">
+<!--section 2 start-->  
+    <div class="slds-section slds-is-open" aura:id="CustomerDetailsSection">
+        <!--section header-->
+        <h3 class="slds-section__title">
+            <button aria-controls="CustomerDetails" class="slds-button slds-section__title-action slds-m-left_medium slds-m-right_medium">
+                <span onclick="{!c.toggleSection}" data-auraId="CustomerDetailsSection">
+                    <lightning:icon iconName="utility:switch"
+                                    size="x-small"
+                                    class="slds-section__title-action-icon slds-button__icon_left"
+                                    alternativeText="button icon" 
+                                    />
+                </span>
+                <span class="slds-truncate" title="Previous Call Details">Customer Details</span>
+            </button>
+        </h3>
+        <!--section body-->
+        <div class="slds-section__content slds-m-left_medium slds-m-right_medium" id="CustDetails">
+            <lightning:recordViewForm recordId="{!v.ParentId}" objectApiName="Customer__c">
+                <div class="slds-box slds-p-around_medium">
+                    <div class="slds-grid slds-gutters">
+                        <div class="slds-col slds-m-left_x-large">
+                            <span><lightning:outputField fieldName="Customer_Name__c" value="{!v.CustName}"/></span>
+                            <span><lightning:outputField fieldName="Contact_Mobile__c" class="disableLink"/></span>
+                        </div>
+                        <div class="slds-col">
+                            <span><lightning:outputField fieldName="Contact_Email__c" class="disableLink"/></span>
+                            <span><label class="slds-form-element__label slds-m-left_xxx-small">Touchpoint</label><br/>
+                   				<lightning:outputField variant="label-hidden" fieldName="RecordTypeId" class="disableLink"/></span>
+                        </div>
+                    
+                </div>
+             </div>
+            </lightning:recordViewForm>
+        </div>
+    </div>
+<!-- Customer section ends-->
+<!--section FC section start-->  
+<div class="slds-section slds-is-open" aura:id="NPAfirstCallerSection">
+    <!--section header-->
+    <h3 class="slds-section__title">
+        <button aria-controls="FirstCallerDetails" class="slds-button slds-section__title-action slds-m-left_medium slds-m-right_medium">
+            <span onclick="{!c.toggleSection}" data-auraId="NPAfirstCallerSection">
+                <lightning:icon iconName="utility:switch"
+                                size="x-small"
+                                class="slds-section__title-action-icon slds-button__icon_left"
+                                alternativeText="button icon" 
+                                />
+            </span>
+            <span class="slds-truncate" title="NPA FC Details">First Caller Details</span>
+        </button>
+    </h3>
+    <!--section body-->
+    <div class="slds-section__content slds-m-left_medium slds-m-right_medium" id="NPAfcDetails">
+        <lightning:recordViewForm recordId="{!v.recordId}" objectApiName="Net_Promoter_Score__c">
+            <div class="slds-box slds-p-around_medium">
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col slds-m-left_x-large">
+                        <span><lightning:outputField fieldName="NPA_Rating__c"/></span>
+                        <span><lightning:outputField fieldName="Fc1_Comments__c"/></span>
+                    </div>
+                    <div class="slds-col">
+                    	<span><lightning:outputField fieldName="Fc2_Comments__c"/></span>
+                        <span><lightning:outputField fieldName="Fc3_Comments__c"/></span>
+                    </div>
+                </div>
+            </div>
+        </lightning:recordViewForm>
+    </div>
+</div>
+<!-- FC section ends-->
+<!--SC view section start-->
+<aura:if isTrue = "{!v.DisplayRscSection}">
+<div class="slds-section slds-is-open" aura:id="NpaScViewSection">
+    <!--section header-->
+    <h3 class="slds-section__title">
+        <button aria-controls="ScDetails" class="slds-button slds-section__title-action slds-m-left_medium slds-m-right_medium">
+            <span onclick="{!c.toggleSection}" data-auraId="NpaScViewSection">
+                <lightning:icon iconName="utility:switch"
+                                size="x-small"
+                                class="slds-section__title-action-icon slds-button__icon_left"
+                                alternativeText="button icon" 
+                                />
+            </span>
+            <span class="slds-truncate" title="NPA SC Details">Second Caller Details</span>
+        </button>
+    </h3>
+    <!--section body-->
+    <div class="slds-section__content slds-m-left_medium slds-m-right_medium" id="ScDetails">
+        <lightning:recordViewForm recordId="{!v.recordId}" objectApiName="Net_Promoter_Score__c">
+            <div class="slds-box slds-p-around_medium">
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col slds-m-left_x-large">
+                        <span><lightning:outputField fieldName="Sc1_Comments__c"/></span>
+                        <span><lightning:outputField fieldName="Sc2_Comments__c"/></span>
+                    </div>
+                    <div class="slds-col">
+                    	<span><lightning:outputField fieldName="Sc3_Comments__c"/></span>
+                        
+                    </div>
+                </div>
+            </div>
+        </lightning:recordViewForm>
+    </div>
+</div>
+    </aura:if>    
+<!--End SC view section-->
+<!--section SC Edit section start-->  
+	<aura:if isTrue = "{!!v.DisplayRscSection}">
+    <div class="slds-section slds-is-open" aura:id="NPAsecondCallerSection">
+    <!--section header-->
+    <h3 class="slds-section__title">
+        <button aria-controls="SecondCallerDetails" class="slds-button slds-section__title-action slds-m-left_medium slds-m-right_medium">
+            <span onclick="{!c.toggleSection}" data-auraId="NPAsecondCallerSection">
+                <lightning:icon iconName="utility:switch"
+                                size="x-small"
+                                class="slds-section__title-action-icon slds-button__icon_left"
+                                alternativeText="button icon" 
+                                />
+            </span>
+            <span class="slds-truncate" title="NPA SC Details">Second Caller Details</span>
+        </button>
+    </h3>
+    <!--section body-->
+    <div class="slds-section__content slds-m-left_medium slds-m-right_medium" id="NPAscDetails">
+        <lightning:recordEditForm recordId="{!v.recordId}" objectApiName="Net_Promoter_Score__c" onsuccess="{!c.handleSuccess}" onerror="{!c.handleError}" onsubmit="{!c.handleSubmit}">
+            <lightning:messages />
+            	<div class="slds-section slds-is-open slds-m-left_medium slds-m-right_large" aura:id="FC1Section">
+                        <span class="slds-button slds-section__title-action slds-m-left_medium slds-m-right_medium slds-truncate" title="FC1Details"><h5>Second Caller 1st Attempt</h5></span>
+                    <!-- sc1 view section-->
+                    <aura:if isTrue="{!v.sc1Sec}">
+                    <div class="slds-section__content" id="ScriptToDisplay">
+                    	<div class="slds-box slds-p-around_medium slds-m-left_medium slds-m-right_medium">    
+                            <div class="slds-grid slds-gutters slds-m-left_large">
+                                <div class="slds-col">
+                                    <span><label class="slds-form-element__label">1st Attempt Status</label><br/>
+                                        <lightning:outputField fieldName="Sc1_Status__c" variant="label-hidden"/></span>
+                                    <span><label class="slds-form-element__label">1st Attempt Comments</label><br/>
+                                        <lightning:outputField fieldName="Sc1_Comments__c" variant="label-hidden"/></span>
+                                </div>
+                                <div class="slds-col">
+                                    <aura:if isTrue="{!v.isSc1cb}">
+                                    <span><label class="slds-form-element__label">1st Attempt Callback Date</label><br/>
+                                        <lightning:outputField fieldName="Sc1_Callback_Date__c" variant="label-hidden"/></span>
+                                    </aura:if>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    </aura:if>
+                    <!--End sc1 view-->
+                    <!-- sc1 edit section-->
+                    <aura:if isTrue="{!!v.sc1Sec}">
+                    <div class="slds-section__content" id="ScriptToDisplay">
+                    	<div class="slds-box slds-p-around_medium slds-m-left_medium slds-m-right_medium">    
+                            <div class="slds-grid slds-gutters" >
+                                <div class="slds-col slds-size_2-of-4">
+                                    <span><label class="slds-form-element__label">1st Attempt Status</label><br/>
+                                        <lightning:inputField aura:id="sc1StatusId" fieldName="Sc1_Status__c" required="true" onclick="{!c.validateValueChange}" onchange="{!c.renderSc1CallBackDate}" variant="label-hidden"/></span>
+                                    <span><label class="slds-form-element__label">1st Attempt Comments</label><br/>
+                                        <lightning:inputField fieldName="Sc1_Comments__c" onkeyup="{!c.validateValueChange}" required="true" variant="label-hidden"/></span>
+                                </div>
+                                <div class="slds-col slds-size_2-of-4">                                   
+                                     <aura:if isTrue = "{!v.sc1StatusHasValue}">  
+                                    	<span><label class="slds-form-element__label">1st Attempt Callback Date</label><br/>
+                                            <lightning:inputField fieldName="Sc1_Callback_Date__c" aura:id="SC1cbField" onclick="{!c.validateValueChange}" onchange="{!c.validatesc1Date}" variant="label-hidden" required="{!v.sc1StatusHasValue}"/>
+                                         <aura:if isTrue="{!v.sc1callBackdateValidationError}">
+                                            <div class="slds-text-color_error slds-p-left_x-small">
+                                                Call back date must be in present or in future
+                                            </div>
+                                        </aura:if> 
+                                         </span>
+                                    </aura:if>                                
+                                </div>                                
+                            </div>
+                        </div>
+                    </div>
+                    </aura:if>
+                    <!--End sc1 edit-->
+                    <aura:if isTrue="{!v.sc1Sec}">
+                    <!--End sc2 view-->
+                    
+                    <aura:if isTrue="{!v.sc2Sec}">
+                        <div class="slds-section slds-is-open" aura:id="SC2Section">
+                        <span class="slds-button slds-section__title-action slds-m-left_medium slds-m-right_medium slds-truncate" title="FC1Details"><h5>Second Caller 2nd Attempt</h5></span>
+                        <div class="slds-section__content" id="ScriptToDisplay">
+                            <div class="slds-box slds-p-around_medium slds-m-left_medium slds-m-right_medium">    
+                                <div class="slds-grid slds-gutters slds-m-left_large">
+                                    <div class="slds-col">
+                                        <span><label class="slds-form-element__label">2nd Attempt Status</label><br/>
+                                            <lightning:outputField fieldName="Sc2_Status__c" variant="label-hidden"/></span>
+                                        <span><label class="slds-form-element__label">2nd Attempt Comments</label><br/>
+                                            <lightning:outputField fieldName="Sc2_Comments__c" variant="label-hidden"/></span>
+                                    </div>
+                                    <div class="slds-col">
+                                        <aura:if isTrue="{!v.isSc2cb}">
+                                        <span><label class="slds-form-element__label">2nd Attempt Callback Date</label><br/>
+                                            <lightning:outputField fieldName="Sc2_Callback_Date__c" variant="label-hidden"/></span>
+                                        </aura:if>
+                                    </div>
+                                 </div>
+                           </div>
+                        </div>
+                        </div>
+                    </aura:if>
+                    <!--End sc2 view section-->
+                    <!--End sc2 edit-->
+                    <aura:if isTrue="{!!v.sc2Sec}">
+                        <div class="slds-section slds-is-open" aura:id="SC2Section">
+                        <span class="slds-button slds-section__title-action slds-m-left_medium slds-m-right_medium slds-truncate" title="FC1Details"><h5>Second Caller 2nd Attempt</h5></span>
+                        <div class="slds-section__content" id="ScriptToDisplay">
+                            <div class="slds-box slds-p-around_medium slds-m-left_medium slds-m-right_medium">    
+                               <div class="slds-grid slds-gutters">
+                                    <div class="slds-col slds-size_2-of-4">
+                                        <span><label class="slds-form-element__label">2nd Attempt Status</label><br/>
+											<lightning:inputField aura:id="sc2StatusId" fieldName="Sc2_Status__c" required="true" onclick="{!c.validateValueChange}" onchange="{!c.renderSc2CallBackDate}" variant="label-hidden"/></span>
+                                        <span><label class="slds-form-element__label">2nd Attempt Comments</label><br/>
+                                            <lightning:inputField fieldName="Sc2_Comments__c" onkeyup="{!c.validateValueChange}" required="true" variant="label-hidden"/></span>
+                                    </div>
+                                    <div class="slds-col slds-size_2-of-4">
+                                        <aura:if isTrue = "{!v.sc2StatusHasValue}">
+                                            <span><label class="slds-form-element__label">2nd Attempt Callback Date</label><br/>
+                                                <lightning:inputField fieldName="Sc2_Callback_Date__c" aura:id="SC2cbField" onclick="{!c.validateValueChange}" onchange="{!c.validatesc2Date}" variant="label-hidden" required="{!v.sc2StatusHasValue}"/>
+                                            <aura:if isTrue="{!v.sc2callBackdateValidationError}">
+                                            <div class="slds-text-color_error slds-p-left_x-small">
+                                                Call back date must be in present or in future
+                                            </div>
+                                        	</aura:if>
+                                        </span>
+                                        </aura:if>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </aura:if>
+                    <!--End sc2 edit section-->
+                    </aura:if>
+                    <aura:if isTrue="{!v.sc2Sec}">
+                    <!--End sc3 view-->
+                    <aura:if isTrue="{!v.sc3Sec}">
+                        <div class="slds-section slds-is-open" aura:id="SC2Section">
+                        <span class="slds-button slds-section__title-action slds-m-left_medium slds-m-right_medium slds-truncate" title="FC1Details"><h5>Second Caller 3rd Attempt</h5></span>
+                        <div class="slds-section__content" id="ScriptToDisplay">
+                            <div class="slds-box slds-p-around_medium slds-m-left_medium slds-m-right_medium">    
+                                <div class="slds-grid slds-gutters slds-m-left_large">
+                        <div class="slds-col">
+                            <span><label class="slds-form-element__label">3rd Attempt Status</label><br/>
+                                <lightning:outputField fieldName="Sc3_Status__c" variant="label-hidden"/></span>
+                            <span><label class="slds-form-element__label">3rd Attempt Comments</label><br/>
+                                <lightning:outputField fieldName="Sc3_Comments__c" variant="label-hidden"/></span>
+                        </div>
+                        <div class="slds-col">
+                            <aura:if isTrue="{!v.isSc3cb}">
+                            <span><label class="slds-form-element__label">3rd Attempt Callback Date</label><br/>
+                                <lightning:outputField fieldName="Sc3_Callback_Date__c" variant="label-hidden"/></span>
+                            </aura:if>
+                        </div>
+                        </div>
+                                </div>
+                        </div>
+                        </div>
+                    </aura:if>
+                    <!--End sc3 view section-->
+                    <!--End sc3 edit-->
+                    <aura:if isTrue="{!!v.sc3Sec}">
+                <div class="slds-section slds-is-open" aura:id="FC1Section">
+                    
+                    <span class="slds-button slds-section__title-action slds-m-left_medium slds-m-right_medium slds-truncate" title="FC1Details"><h5>Second Caller 3rd Attempt</h5></span>
+                    
+                    <div class="slds-section__content" id="ScriptToDisplay">
+                    	<div class="slds-box slds-p-around_medium slds-m-left_medium slds-m-right_medium">    
+                           <div class="slds-grid slds-gutters">
+                                <div class="slds-col  slds-size_2-of-4">
+                                    <span><label class="slds-form-element__label">3rd Attempt Status</label><br/>
+                                        <lightning:inputField aura:id="sc3StatusId" fieldName="Sc3_Status__c" required="true" onclick="{!c.validateValueChange}" onchange="{!c.renderSc3CallBackDate}" variant="label-hidden"/></span>
+                                    <span><label class="slds-form-element__label">3rd Attempt Comments</label><br/>
+                                        <lightning:inputField fieldName="Sc3_Comments__c" onkeyup="{!c.validateValueChange}" required="true" variant="label-hidden"/></span>
+                                </div>
+                                <div class="slds-col  slds-size_2-of-4">
+                                     <aura:if isTrue = "{!v.sc3StatusHasValue}">
+                                        <span><label class="slds-form-element__label">3rd Attempt Callback Date</label><br/>
+                                            <lightning:inputField fieldName="Sc3_Callback_Date__c" aura:id="SC3cbField" onclick="{!c.validateValueChange}" onchange="{!c.validatesc3Date}" variant="label-hidden" required="{!v.sc3StatusHasValue}"/>
+                                         <aura:if isTrue="{!v.sc3callBackdateValidationError}">
+                                            <div class="slds-text-color_error slds-p-left_x-small">
+                                                Call back date must be in present or in future
+                                            </div>
+                                         </aura:if>
+                                        </span>
+                                    </aura:if>
+                               </div>                                
+                            </div>
+                        </div>
+                    </div>
+            	 </div>
+                    </aura:if>
+                    <!--End sc3 edit -->
+                    </aura:if>
+                 <!--here-->
+            </div>           
+            
+            <div class="slds-align_absolute-center" style="height:5rem">
+              <aura:if isTrue = "{!v.hideSave}">
+                <lightning:button variant="brand" type="submit" label="Save" />
+              </aura:if>
+                <lightning:button variant="brand" label="Back" title="Go to List Page" onclick="{! c.validateNPAdetails }" />
+            	
+                <aura:if isTrue = "{!v.renderReassignOwner}">
+                	<lightning:button variant="brand" class="slds-m-top_x-medium" label="Re-assign Owner" title="Re-assign Owner" onclick="{! c.openModel }" />
+                </aura:if>
+                <aura:if isTrue = "{!v.renderSendEmailButton}">
+                	<lightning:button variant="brand" 
+                                      label="Send Email" 
+                                      title="Send Email" 
+                                      onclick="{! c.openEmailTemplate }" />
+                </aura:if>            
+            </div>
+        </lightning:recordEditForm>
+    </div>
+</div>
+</aura:if>
+<!-- SC section ends-->
+    
+    <!--section Reassign SC Edit section start-->  
+	<aura:if isTrue = "{!v.DisplayRscSection}">
+    <div class="slds-section slds-is-open" aura:id="NPARscSection">
+    <!--section header-->
+    <h3 class="slds-section__title">
+        <button aria-controls="RSecondCallerDetails" class="slds-button slds-section__title-action slds-m-left_medium slds-m-right_medium">
+            <span onclick="{!c.toggleSection}" data-auraId="NPARscSection">
+                <lightning:icon iconName="utility:switch"
+                                size="x-small"
+                                class="slds-section__title-action-icon slds-button__icon_left"
+                                alternativeText="button icon" 
+                                />
+            </span>
+            <span class="slds-truncate" title="NPA RSC Details">Reassigned Second Caller Details</span>
+        </button>
+    </h3>
+    <!--section body-->
+    <div class="slds-section__content slds-m-left_medium slds-m-right_medium" id="NPAscDetails">
+        <lightning:recordEditForm recordId="{!v.recordId}" objectApiName="Net_Promoter_Score__c" onsuccess="{!c.handleSuccess}" onsubmit="{!c.handleSubmit}">
+            <!--<div class="slds-align_absolute-center" style="height:5rem">
+            	<lightning:button variant="brand-outline" label="Close NPA" title="Go to List Page" onclick="{! c.closeNpa }" />
+            </div>-->	
+            <lightning:messages />
+            <!--Added by Ruchika for displaying Reassign Owner Comments-->
+            	<div class="slds-section__content" id="ScriptToDisplay">
+                    	<div class="slds-box slds-p-around_medium slds-m-left_medium slds-m-right_medium">    
+                            <div class="slds-grid slds-gutters slds-m-left_large">
+                                <div class="slds-col">
+                                    <aura:if isTrue = "{!(empty(v.Reassign_Comments_1__c))}">
+                                    <span><label class="slds-form-element__label">Reassign Comments 1</label><br/>
+                                        <lightning:outputField fieldName="Reassign_Comments_1__c" variant="label-hidden"/></span>
+                                    </aura:if>
+                                    <aura:if isTrue = "{!(empty(v.Reassign_Comments_3__c))}">
+                                    <span><label class="slds-form-element__label">Reassign Comments 3</label><br/>
+                                        <lightning:outputField fieldName="Reassign_Comments_3__c" variant="label-hidden"/></span>
+                                    </aura:if>
+                                    <aura:if isTrue = "{!(empty(v.Reassign_Comments_5__c))}">
+                                     <span><label class="slds-form-element__label">Reassign Comments 5</label><br/>
+                                        <lightning:outputField fieldName="Reassign_Comments_5__c" variant="label-hidden"/></span>
+                                    </aura:if>
+                                </div>
+                                <div class="slds-col">
+                                    <aura:if isTrue = "{!(empty(v.Reassign_Comments_2__c))}">
+                                    <span><label class="slds-form-element__label">Reassign Comments 2</label><br/>
+                                        <lightning:outputField fieldName="Reassign_Comments_2__c" variant="label-hidden"/></span>
+                                    </aura:if>
+                                    <aura:if isTrue = "{!(empty(v.Reassign_Comments_4__c))}">
+                                    <span><label class="slds-form-element__label">Reassign Comments 4</label><br/>
+                                        <lightning:outputField fieldName="Reassign_Comments_4__c" variant="label-hidden"/></span>
+                                    </aura:if>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                <div class="slds-section slds-is-open slds-m-right_medium" aura:id="FC1Section">
+                        <span class="slds-button slds-section__title-action slds-m-left_medium slds-m-right_medium slds-truncate" title="FC1Details"><h5>Second Caller 1st Attempt</h5></span>
+                   <aura:if isTrue="{!v.rsc1Sec}">
+                    <div class="slds-section__content" id="ScriptToDisplay">
+                    	<div class="slds-box slds-p-around_medium slds-m-left_medium slds-m-right_medium">    
+                            <div class="slds-grid slds-gutters slds-m-left_large">
+                                <div class="slds-col">
+                                    <span><label class="slds-form-element__label">1st Attempt Status</label><br/>
+                                        <lightning:outputField fieldName="Rsc1_Status__c" variant="label-hidden"/></span>
+                                    <span><label class="slds-form-element__label">1st Attempt Comments</label><br/>
+                                        <lightning:outputField fieldName="Rsc1_Comments__c" variant="label-hidden"/></span>
+                                </div>
+                                <div class="slds-col">
+                                    <aura:if isTrue="{!v.isRsc1cb}">
+                                    <span><label class="slds-form-element__label">1st Attempt Callback Date</label><br/>
+                                        <lightning:outputField fieldName="Rsc1_Callback_Date__c" variant="label-hidden"/></span>
+                                    </aura:if>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    </aura:if>
+                    <!--End sc1 view-->
+                    <!-- sc1 edit section-->
+                    <aura:if isTrue="{!!v.rsc1Sec}">
+                    <div class="slds-section__content" id="ScriptToDisplay">
+                    	<div class="slds-box slds-p-around_medium slds-m-left_medium slds-m-right_medium">    
+                            <div class="slds-grid slds-gutters">
+                                <div class="slds-col  slds-size_2-of-4">
+                                    <span><label class="slds-form-element__label">1st Attempt Status</label><br/>
+                                        <lightning:inputField aura:id="rsc1StatusId" fieldName="Rsc1_Status__c" required="true" onclick="{!c.validateValueChange}" onchange="{!c.renderRsc1CallBackDate}" variant="label-hidden"/></span>
+                                    <span><label class="slds-form-element__label">1st Attempt Comments</label><br/>
+                                        <lightning:inputField fieldName="Rsc1_Comments__c" onkeyup="{!c.validateValueChange}"
+                                                                required="true" variant="label-hidden"/></span>
+                                </div>
+                                <div class="slds-col  slds-size_2-of-4">
+                                    <aura:if isTrue = "{!v.rsc1StatusHasValue}">
+                                        <span><label class="slds-form-element__label">1st Attempt Callback Date</label><br/>
+                                            <lightning:inputField fieldName="Rsc1_Callback_Date__c" aura:id="Rsc1cbField" onclick="{!c.validateValueChange}" onchange="{!c.validateRsc1Date}" variant="label-hidden" required="{!v.rsc1StatusHasValue}"/>
+                                        <aura:if isTrue="{!v.rsc1callBackdateValidationError}">
+                                            <div class="slds-text-color_error slds-p-left_x-small">
+                                                Call back date must be in present or in future
+                                            </div>
+                                        </aura:if>
+                                        </span>
+                                    </aura:if>
+                                </div>                                
+                            </div>
+                        </div>
+                    </div>
+                    </aura:if>
+                    <!--End sc1 edit-->
+                    <aura:if isTrue="{!v.rsc1Sec}">
+                    <!--End sc2 view-->
+                    <aura:if isTrue="{!v.rsc2Sec}">
+                        <div class="slds-section slds-is-open" aura:id="SC2Section">
+                        <span class="slds-button slds-section__title-action slds-m-left_medium slds-m-right_medium slds-truncate" title="FC1Details"><h5>Second Caller 2nd Attempt</h5></span>
+                        <div class="slds-section__content" id="ScriptToDisplay">
+                            <div class="slds-box slds-p-around_medium slds-m-left_medium slds-m-right_medium">    
+                                <div class="slds-grid slds-gutters slds-m-left_large">
+                        <div class="slds-col">
+                            <span><label class="slds-form-element__label">2nd Attempt Status</label><br/>
+                                <lightning:outputField fieldName="Rsc2_Status__c" variant="label-hidden"/></span>
+                            <span><label class="slds-form-element__label">2nd Attempt Comments</label><br/>
+                                <lightning:outputField fieldName="Rsc2_Comments__c" variant="label-hidden"/></span>
+                        </div>
+                        <div class="slds-col">
+                            <aura:if isTrue="{!v.isRsc2cb}">
+                            <span><label class="slds-form-element__label">2nd Attempt Callback Date</label><br/>
+                                <lightning:outputField fieldName="Rsc2_Callback_Date__c" variant="label-hidden"/></span>
+                            </aura:if>
+                        </div>
+                        </div>
+                                </div>
+                        </div>
+                        </div>
+                    </aura:if>
+                    <!--End sc2 view section-->
+                    <!--End sc2 edit-->
+                    <aura:if isTrue="{!!v.rsc2Sec}">
+                        <div class="slds-section slds-is-open" aura:id="SC2Section">
+                        <span class="slds-button slds-section__title-action slds-m-left_medium slds-m-right_medium slds-truncate" title="FC1Details"><h5>Second Caller 2nd Attempt</h5></span>
+                        <div class="slds-section__content" id="ScriptToDisplay">
+                            <div class="slds-box slds-p-around_medium slds-m-left_medium slds-m-right_medium">    
+                                 <div class="slds-grid slds-gutters">
+                                    <div class="slds-col slds-size_2-of-4">
+                                        <span><label class="slds-form-element__label">2nd Attempt Status</label><br/>
+                                            <lightning:inputField aura:id="rsc2StatusId" fieldName="Rsc2_Status__c" required="true" onclick="{!c.validateValueChange}" onchange="{!c.renderRsc2CallBackDate}" variant="label-hidden"/></span>
+                                        <span><label class="slds-form-element__label">2nd Attempt Comments</label><br/>
+                                            <lightning:inputField fieldName="Rsc2_Comments__c" onkeyup="{!c.validateValueChange}" required="true" variant="label-hidden"/></span>
+                                    </div>
+                                    <div class="slds-col slds-size_2-of-4">
+                                        <aura:if isTrue = "{!v.rsc2StatusHasValue}">
+                                            <span><label class="slds-form-element__label">2nd Attempt Callback Date</label><br/>
+                                                <lightning:inputField fieldName="Rsc2_Callback_Date__c" aura:id="Rsc2cbField" onclick="{!c.validateValueChange}" onchange="{!c.validateRsc2Date}" variant="label-hidden" required="{!v.rsc2StatusHasValue}"/>
+                                                <aura:if isTrue="{!v.rsc2callBackdateValidationError}">
+                                                    <div class="slds-text-color_error slds-p-left_x-small">
+                                                        Call back date must be in present or in future
+                                                    </div>
+                                                </aura:if>
+                                            </span>
+                                        </aura:if>
+                                    </div>                                
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </aura:if>
+                    <!--End sc2 edit section-->
+                    </aura:if>
+                    <aura:if isTrue="{!v.rsc2Sec}">
+                    <!--End sc3 view-->
+                    <aura:if isTrue="{!v.rsc3Sec}">
+                        <div class="slds-section slds-is-open" aura:id="SC2Section">
+                        <span class="slds-button slds-section__title-action slds-m-left_medium slds-m-right_medium slds-truncate" title="FC1Details"><h5>Second Caller 3rd Attempt</h5></span>
+                        <div class="slds-section__content" id="ScriptToDisplay">
+                            <div class="slds-box slds-p-around_medium slds-m-left_medium slds-m-right_medium">    
+                                <div class="slds-grid slds-gutters slds-m-left_large">
+                                <div class="slds-col">
+                                    <span><label class="slds-form-element__label">3rd Attempt Status</label><br/>
+                                        <lightning:outputField fieldName="Rsc3_Status__c" variant="label-hidden"/></span>
+                                    <span><label class="slds-form-element__label">3rd Attempt Comments</label><br/>
+										<lightning:outputField fieldName="Rsc3_Comments__c" variant="label-hidden"/></span>
+                                </div>
+                                <div class="slds-col">
+                                    <aura:if isTrue="{!v.isRsc3cb}">
+                                    <span><label class="slds-form-element__label">3rd Attempt Callback Date</label><br/>
+                                        <lightning:outputField fieldName="Rsc3_Callback_Date__c" variant="label-hidden"/></span>
+                                    </aura:if>
+                                </div>
+                                
+                            </div>
+                                
+                                	
+                            </div>
+                        </div>
+                        </div>
+                    </aura:if>
+                    <!--End sc3 view section-->
+                    <!--End sc3 edit-->
+                    <aura:if isTrue="{!!v.rsc3Sec}">
+                <div class="slds-section slds-is-open" aura:id="FC1Section">
+                    
+                    <span class="slds-button slds-section__title-action slds-m-left_medium slds-m-right_medium slds-truncate" title="FC1Details"><h5>Second Caller 3rd Attempt</h5></span>
+                    
+                    <div class="slds-section__content" id="ScriptToDisplay">
+                    	<div class="slds-box slds-p-around_medium slds-m-left_medium slds-m-right_medium">    
+                            <div class="slds-grid slds-gutters">
+                                    <div class="slds-col slds-size_2-of-4">
+                                        <span><label class="slds-form-element__label">3rd Attempt Status</label><br/>
+                                            <lightning:inputField  aura:id="rsc3StatusId" fieldName="Rsc3_Status__c" required="true" onclick="{!c.validateValueChange}" onchange="{!c.renderRsc3CallBackDate}" variant="label-hidden"/></span>
+                                        <span><label class="slds-form-element__label">3rd Attempt Comments</label><br/>
+                                            <lightning:inputField fieldName="Rsc3_Comments__c" onkeyup="{!c.validateValueChange}" required="true" variant="label-hidden"/></span>
+                                    </div>
+                                    <div class="slds-col slds-size_2-of-4">
+                                          <aura:if isTrue = "{!v.rsc3StatusHasValue}">
+                                            <span><label class="slds-form-element__label">3rd Attempt Callback Date</label><br/>
+                                                <lightning:inputField fieldName="Rsc3_Callback_Date__c" aura:id="Rsc3cbField" onclick="{!c.validateValueChange}" onchange="{!c.validateRsc3Date}" variant="label-hidden" required="{!v.rsc3StatusHasValue}"/>
+                                                <aura:if isTrue="{!v.rsc3callBackdateValidationError}">
+                                                    <div class="slds-text-color_error slds-p-left_x-small">
+                                                        Call back date must be in present or in future
+                                                    </div>
+                                                </aura:if>
+                                              </span>
+                                          </aura:if>
+                                    </div>                    
+                                </div>
+                        </div>
+                    </div>
+            	 </div>
+                    </aura:if>
+                    <!--End sc3 edit -->
+                    </aura:if> 
+                    
+            	</div>
+         
+             
+            <div class="slds-align_absolute-center" style="height:5rem">
+               <aura:if isTrue = "{!v.hideSave}">
+                	<lightning:button variant="brand" type="submit" label="Save" />
+               </aura:if>
+                <lightning:button variant="brand" 
+                                  label="Back" 
+                                  title="Go to List Page" 
+                                  onclick="{! c.validateNPAdetails }" />
+                <lightning:button variant="brand" class="slds-m-top_x-medium" label="Re-assign Owner" title="Re-assign Owner" onclick="{! c.openModel }" />
+				<aura:if isTrue = "{!v.renderSendEmailButton}">
+                	<lightning:button variant="brand" 
+                                      label="Send Email" 
+                                      title="Send Email" 
+                                      onclick="{! c.openEmailTemplate }" />
+                </aura:if>
+                </div>
+        </lightning:recordEditForm>
+    </div>
+</div>
+</aura:if>
+</div>
+   <aura:if isTrue = "{!v.isOpen}">
+     <c:RassignOwnerModal customerId= "{!v.ParentId}" isOpen = "{!v.isOpen}"/>
+ </aura:if>  
+</aura:component>

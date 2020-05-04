@@ -1,0 +1,317 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" controller="CaptureNpaDetailsController">
+    <aura:attribute name="message" 	  						type="String"/>
+    <aura:attribute name="isOpen" 							type="Boolean" 		default = "false" />
+    <aura:attribute name="isDefaultManagerLoggedIn" 		type="Boolean" 		default = "false"/>
+    <aura:attribute name="openModel" 						type="Boolean" 		default = "false" />
+    <aura:attribute name="fc1callBackdateValidationError" 	type="Boolean" 		default = "false"/>
+    <aura:attribute name="fc2callBackdateValidationError" 	type="Boolean" 		default = "false"/>
+    <aura:attribute name="fc3callBackdateValidationError" 	type="Boolean" 		default = "false"/>
+    <aura:attribute name="disableStatusforPromoter" 	type="Boolean" default ="false" />
+    <aura:attribute name="fc1StatusHasValue" 	type="Boolean" default ="false" />
+    <aura:attribute name="fc2StatusHasValue" 	type="Boolean" default ="false" />
+    <aura:attribute name="fc3StatusHasValue" 	type="Boolean" default ="false" />
+    <aura:attribute name="fc1Sec" 				type="Boolean" default="false" />
+    <aura:attribute name="fc2Sec" 				type="Boolean" default="false" />
+    <aura:attribute name="fc3Sec" 				type="Boolean" default="false" />
+    <aura:attribute name="isFc1cb" 				type="Boolean" default="false" />
+    <aura:attribute name="isFc2cb" 				type="Boolean" default="false" />
+    <aura:attribute name="isFc3cb" 				type="Boolean" default="false" />
+    <aura:attribute name="displaySave" 			type="Boolean" default="true" />
+    <aura:attribute name="disableRatings" 		type="Boolean" default="false" />
+    <aura:attribute name="status" 				type="String" default="false" />
+     
+    <aura:attribute name="value" type="List" default="option1"/>
+
+    
+	<aura:attribute name="Ratings" type="List" default="[
+                                                       {'label': 'NA', 'value': ''},
+                                                       {'label': '0', 'value': '0'},
+                                                       {'label': '1', 'value': '1'},
+                                                       {'label': '2', 'value': '2'},
+                                                       {'label': '3', 'value': '3'},
+                                                       {'label': '4', 'value': '4'},
+                                                       {'label': '5', 'value': '5'},
+                                                       {'label': '6', 'value': '6'},
+                                                       {'label': '7', 'value': '7'},
+                                                       {'label': '8', 'value': '8'},
+                                                       {'label': '9', 'value': '9'},
+                                                       {'label': '10', 'value': '10'}
+                                                       ]"/>
+    <aura:attribute name="secCallback" type="List" default="[
+                                                       {'label': 'Yes', 'value': 'Yes'},
+                                                       {'label': 'No', 'value': 'No'}
+                                                       ]"/>
+    
+    <aura:attribute name="isDataChanged"  	type="Boolean" default="false"/>
+    <aura:attribute name="isRatingChanged"  type="Boolean" default="false"/>
+	<aura:attribute name="ParentId" 	  	type="String"/>
+    <aura:attribute name="NpaRecId" 	  	type="Id"/>
+    <aura:attribute name="NpaRec" 	      	type="Object"/>
+    <aura:attribute name="RatingValue" 	  	type="String"/>
+    <aura:attribute name="SecondCallback"	type="Boolean"/>
+    <aura:attribute name="fc1unsStatus" 	type="String"/>
+    <aura:attribute name="fc1CbDate" 		type="Datetime"/>
+    <aura:attribute name="FC1_Comment" 	  	type="String"/>
+    <aura:attribute name="NPA_Data" 	  	type="Object"/>    
+   
+    <aura:attribute name="Spinner" type="boolean" default="true"/>   
+    <aura:if isTrue="{!v.Spinner}">
+         <lightning:spinner variant="brand"  size="large" />
+     </aura:if>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />  
+    	<div class="slds-text-body_small slds-m-left_medium slds-m-right_medium">
+               <div class="slds-box slds-p-around_medium">
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col">
+                        <span> 
+                            <lightning:radioGroup name="NPARating" 
+                              label="NPA Score"
+                              options="{! v.Ratings }"
+                              value="{! v.RatingValue }"
+                              type="button"
+                              class="slds-m-left_x-large setwidth"
+                              onchange="{!c.updateStatusforPromoter}"
+                              aura:id="npaRating"
+                              disabled="{!v.disableRatings}" 
+                              />
+                        </span>
+                    </div>
+                    <div class="slds-col">
+                    	<span>                           
+                           
+                            	<b>
+                                    <lightning:input type		= "Checkbox" 
+                                                     label 		= "Second Callback" 
+                                                     checked	= "{!v.SecondCallback}"
+                                                     onchange	= "{! c.setNPA_data }"
+                                                     class 		= " slds-m-left_x-large slds-m-top_large"
+                                                     disabled="{!v.disableRatings}" 
+                                                     />
+                                </b>
+                                                       
+                        </span>
+                    </div>
+                </div>
+                </div> 
+        	</div>
+    	
+        <!--section body-->
+        <lightning:recordEditForm recordId="{!v.NpaRecId}" objectApiName="Net_Promoter_Score__c" onsubmit="{!c.handleSubmit}">
+       	<div class="slds-section slds-is-open" aura:id="FC1Section">
+        <!--section header-->
+        <h5 class="slds-section__title">          
+        <span class="slds-button slds-section__title-action slds-m-left_medium slds-m-right_medium slds-truncate" title="FC1Details">First Caller 1st Attempt</span>
+            <!--</button>-->
+        </h5>
+        <!--FC1 View Section-->
+            <aura:if isTrue="{!v.fc1Sec}">
+                    <div class="slds-section__content" id="ScriptToDisplay">
+                    	<div class="slds-box slds-p-around_medium slds-m-left_medium slds-m-right_medium">    
+                            <div class="slds-grid slds-gutters slds-m-left_large">
+                                <div class="slds-col slds-size_2-of-4">
+                                    <span><label class="slds-form-element__label">1st Attempt Status</label><br/>
+                                        <lightning:outputField fieldName="Fc1_Status__c" variant="label-hidden"/></span>
+                                    <span><label class="slds-form-element__label">1st Attempt Commments</label><br/>
+                                        <lightning:outputField fieldName="Fc1_Comments__c" variant="label-hidden"/></span>
+                                </div>
+                                <div class="slds-col slds-size_2-of-4">
+                                    <aura:if isTrue="{!v.isFc1cb}">
+                                    <span><label class="slds-form-element__label">1st Attempt Callback Date</label><br/>
+                                        <lightning:outputField fieldName="Fc1_Callback_Date__c" variant="label-hidden"/></span>
+                                    </aura:if>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </aura:if>
+        <!--End view section-->
+        <!--section body-->
+       <aura:if isTrue="{!!v.fc1Sec}">
+        <div class="slds-section__content" id="ScriptToDisplay">
+            <div class="slds-text-body_small slds-m-left_medium slds-m-right_medium">
+               <div class="slds-box slds-p-around_medium">
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col slds-size_2-of-4">
+                    	<span><label class="slds-form-element__label">1st Attempt Status</label><br/>
+                            <lightning:inputField fieldName="Fc1_Status__c" required="true" 
+                                                  onchange="{!c.renderFc1CallBackDate}"  aura:id="FC1statusField" 
+                                                  variant="label-hidden" disabled="{!v.disableStatusforPromoter}"/></span>
+                        <span><label class="slds-form-element__label slds-m-top_small">1st Attempt Comments</label><br/>
+                            <lightning:inputField fieldName="Fc1_Comments__c" required="true" 
+                                                  aura:id="FC1commentField" variant="label-hidden" disabled="{!v.disableStatusforPromoter}"/></span>
+                    </div>
+                   
+                        <div class="slds-col slds-size_2-of-4"> 
+                             <aura:if isTrue="{!v.fc1StatusHasValue}">
+                                <div>
+                                    <span><label class="slds-form-element__label slds-m-top_small">1st Attempt Callback Date</label><br/>
+                                        <lightning:inputField fieldName="Fc1_Callback_Date__c" aura:id="FC1cbField" variant="label-hidden" required="true" onchange="{!c.validatefc1Date}"/>
+                                        <aura:if isTrue="{!v.fc1callBackdateValidationError}">
+                                            <div class="slds-text-color_error slds-p-left_x-small">
+                                                Call back date must be in present or in future
+                                            </div>
+                                        </aura:if>                                
+                                    </span>
+                                </div>  
+                              </aura:if>
+                        </div>
+                    
+                </div>
+                </div> 
+        	</div>
+        </div>
+      </aura:if>
+    </div>
+    <aura:if isTrue="{!v.fc1Sec}">
+    <div class="slds-section slds-is-open" aura:id="FC2Section">
+        <!--section header-->
+        <h5 class="slds-section__title">           
+        	<span class="slds-button slds-section__title-action slds-m-left_medium slds-m-right_medium slds-truncate" title="FC2Details">First Caller 2nd Attempt</span>
+        </h5>
+        <!--FC2 View Section-->
+		<aura:if isTrue="{!v.fc2Sec}">
+                    <div class="slds-section__content" id="ScriptToDisplay">
+                    	<div class="slds-box slds-p-around_medium slds-m-left_medium slds-m-right_medium">    
+                            <div class="slds-grid slds-gutters slds-m-left_large">
+                                <div class="slds-col slds-size_2-of-4">
+                                    <span><label class="slds-form-element__label">2nd Attempt Status</label><br/>
+                                        <lightning:outputField fieldName="Fc2_Status__c" variant="label-hidden"/></span>
+                                    <span><label class="slds-form-element__label">2nd Attempt Comments</label><br/>
+                                        <lightning:outputField fieldName="Fc2_Comments__c" variant="label-hidden"/></span>
+                                </div>
+                                <div class="slds-col slds-size_2-of-4">
+                                    <aura:if isTrue="{!v.isFc2cb}">
+                                    <span><label class="slds-form-element__label">2nd Attempt Callback Date</label><br/>
+                                        <lightning:outputField fieldName="Fc2_Callback_Date__c" variant="label-hidden"/></span>
+                                    </aura:if>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </aura:if>
+		<!--End view section-->
+        <!--section body-->
+        <aura:if isTrue="{!!v.fc2Sec}">
+        <div class="slds-section__content" id="FC2Details">
+            <div class="slds-text-body_small slds-m-left_medium slds-m-right_medium">
+               <div class="slds-box slds-p-around_medium">
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col slds-size_2-of-4">
+                    	<span><label class="slds-form-element__label">2nd Attempt Status</label><br/>
+                            <lightning:inputField fieldName="Fc2_Status__c" required="true" 
+                                                  onchange="{!c.renderFc2CallBackDate}" aura:id="FC2statusField" 
+                                                  variant="label-hidden" disabled="{!v.disableStatusforPromoter}"/></span>
+                        <span><label class="slds-form-element__label slds-m-top_small">2nd Attempt Comments</label><br/>
+                            <lightning:inputField fieldName="Fc2_Comments__c" required="true" 
+                                                  aura:id="FC2commentField" variant="label-hidden" disabled="{!v.disableStatusforPromoter}"/></span>
+                    </div>
+                    
+                        <div class="slds-col slds-size_2-of-4">   
+                             <aura:if isTrue="{!v.fc2StatusHasValue}">
+                                <div>
+                                    <span><label class="slds-form-element__label slds-m-top_small">2nd Attempt Callback Date</label><br/>
+                                        <lightning:inputField fieldName="Fc2_Callback_Date__c" aura:id="FC2cbField" required="true" variant="label-hidden" onchange="{!c.validatefc2Date}"/></span>
+                                    <aura:if isTrue="{!v.fc2callBackdateValidationError}">
+                                        <div class="slds-text-color_error slds-p-left_x-small">
+                                            Call back date must be in present or in future!
+                                        </div>
+                                    </aura:if> 
+                                </div>
+                              </aura:if>
+                        </div>
+                  
+                </div>
+                </div>
+        	</div>
+        </div>
+     </aura:if>
+    </div>
+    </aura:if>
+    <aura:if isTrue="{!v.fc2Sec}">
+    <div class="slds-section slds-is-open" aura:id="FC3Section">
+        <!--section header-->
+        <h5 class="slds-section__title">            
+        <span class="slds-button slds-section__title-action slds-m-left_medium slds-m-right_medium slds-truncate" title="FC3Details">First Caller 3rd Attempt</span>
+        </h5>
+        
+        <!--FC3 View Section-->
+		<aura:if isTrue="{!v.fc3Sec}">
+                    <div class="slds-section__content" id="ScriptToDisplay">
+                    	<div class="slds-box slds-p-around_medium slds-m-left_medium slds-m-right_medium">    
+                            <div class="slds-grid slds-gutters slds-m-left_large">
+                                <div class="slds-col slds-size_2-of-4">
+                                    <span><label class="slds-form-element__label">3rd Attempt Status</label><br/>
+                                        <lightning:outputField fieldName="Fc3_Status__c" variant="label-hidden"/></span>
+                                    <span><label class="slds-form-element__label">3rd Attempt Comments</label><br/>
+                                        <lightning:outputField fieldName="Fc3_Comments__c" variant="label-hidden"/></span>
+                                </div>
+                                <div class="slds-col slds-size_2-of-4">
+                                    <aura:if isTrue="{!v.isFc3cb}">
+                                    <span><label class="slds-form-element__label">3rd Attempt Callback Date</label><br/>
+                                        <lightning:outputField fieldName="Fc3_Callback_Date__c" variant="label-hidden"/></span>
+                                    </aura:if>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </aura:if>
+<!--End view section-->
+        <!--section body-->
+        <aura:if isTrue="{!!v.fc3Sec}">
+        <div class="slds-section__content" id="ScriptToDisplay">
+            <div class="slds-text-body_small slds-m-left_medium slds-m-right_medium">
+               <div class="slds-box slds-p-around_medium">
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col slds-size_2-of-4">
+                    	<span><label class="slds-form-element__label">3rd Attempt Status</label><br/>
+                            <lightning:inputField fieldName="Fc3_Status__c" required="true" 
+                                                  aura:id="FC3statusField"  onchange="{!c.renderFc3CallBackDate}" 
+                                                  variant="label-hidden" disabled="{!v.disableStatusforPromoter}"/></span>
+                        <span><label class="slds-form-element__label slds-m-top_small">3rd Attempt Comments</label><br/>
+                            <lightning:inputField fieldName="Fc3_Comments__c" required="true" 
+                                                  aura:id="FC3commentField" variant="label-hidden" disabled="{!v.disableStatusforPromoter}"/></span>
+                    </div>
+                    
+                        <div class="slds-col slds-size_2-of-4">  
+                             <aura:if isTrue="{!v.fc3StatusHasValue}">
+                                <div>
+                                    <span><label class="slds-form-element__label slds-m-top_small">3rd Attempt Callback Date</label><br/>
+                                        <lightning:inputField fieldName="Fc3_Callback_Date__c" aura:id="FC3cbField" required="true" variant="label-hidden" onchange="{!c.validatefc3Date}"/></span>
+                                    <aura:if isTrue="{!v.fc3callBackdateValidationError}">
+                                        <div class="slds-text-color_error slds-p-left_x-small">
+                                            Call back date must be in present or in future!
+                                        </div>
+                                    </aura:if> 
+                                </div>
+                            </aura:if>
+                        </div>
+                </div>
+                </div>
+        	</div>
+        </div>
+      </aura:if>
+    </div>     
+    </aura:if>           
+    <div class="slds-align_absolute-center" style="height:5rem">
+        <aura:if isTrue="{!v.displaySave}">
+        	<lightning:button variant="brand" type="submit" label="Save" />
+        </aura:if>
+        <lightning:button variant="brand" label="Cancel" title="Go to List Page" onclick="{! c.validateNPAdetails }" />
+         <aura:if isTrue = "{!v.isDefaultManagerLoggedIn}">             
+              <lightning:button variant="brand" class="slds-m-top_x-medium" label="Re-assign Owner" title="Re-assign Owner" onclick="{! c.openModel }" />
+         </aura:if>       
+          <aura:if isTrue = "{!v.isOpen}"> 
+         	<c:RassignOwnerModal customerId= "{!v.ParentId}" isOpen = "{!v.isOpen}" />
+         </aura:if>
+    </div>
+    </lightning:recordEditForm>
+        
+<!-- End -->
+    <div class="slds-float_right">
+      <lightning:button variant="brand-outline" label="Customer List Page" title="Go to List Page" onclick="{! c.validateNPAdetails }" />
+    </div>
+</aura:component>

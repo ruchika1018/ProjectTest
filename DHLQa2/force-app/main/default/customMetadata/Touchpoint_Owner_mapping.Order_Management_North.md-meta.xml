@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Order Management - North</label>
+    <protected>false</protected>
+    <values>
+        <field>Functional_Head_Email__c</field>
+        <value xsi:type="xsd:string">atul.upmanyu@dhl.com</value>
+    </values>
+    <values>
+        <field>Region__c</field>
+        <value xsi:type="xsd:string">North</value>
+    </values>
+    <values>
+        <field>Touchpoint_Name__c</field>
+        <value xsi:type="xsd:string">Order Management</value>
+    </values>
+    <values>
+        <field>Username__c</field>
+        <value xsi:type="xsd:string">atul.upmanyu@dhl.com.qa</value>
+    </values>
+</CustomMetadata>

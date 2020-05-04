@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Is_Key_Account__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>This field signifies if the Customer is a Key Account or nit
+If value is,
+true - Customer is a key account
+false - Customer is not a key account</description>
+    <externalId>false</externalId>
+    <label>Is Key Account</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,62 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+                access="global"
+                controller="CustomerDetailsController">    
+    
+	<aura:attribute name="customerList" type="List" />
+    
+    <aura:attribute name="customerColumns" 	 type="List"/>
+    <aura:attribute name="targetColumnNames" type="List"/>
+    
+    <aura:attribute name="customerData" type="sObject[]"/>
+    <aura:attribute name="targetsData" 	type="Object"/>
+    
+    <aura:attribute name="sortedBy" 		 	type="String" default="Name"/>
+    <aura:attribute name="sortedDirection"   	type="String" default="asc"/> 
+    <aura:attribute name="firstCallerName"   	type="String"/> 
+    <aura:attribute name="renderTargetTable" 	type="Boolean" default="false"/>
+        
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />    
+    
+    <div class="slds-grid slds-grid_vertical">
+    	<div>
+        	<div class="slds-grid slds-wrap slds-page-header slds-align_absolute-center" >    
+                <div class="slds-col slds-size_1-of-1 slds-large-size_6-of-12">
+                     <div class="" role="banner">
+                        <span class="slds-text-heading_large">{!v.firstCallerName}</span>       
+                    </div>
+                </div>
+               
+                <div class="slds-col slds-size_1-of-1 slds-large-size_6-of-12">
+                    <!--Target table Page header-->
+                    <aura:if isTrue="{! v.renderTargetTable }">
+                        <div class="slds-page-header" role="banner">
+                            <span class="slds-text-heading_small slds-align_absolute-center">Targets</span>       
+                        </div>
+                        <div class="datatable">
+                            <lightning:datatable columns="{!v.targetColumnNames}"
+                                                 data="{!v.targetsData}"
+                                                 hideCheckboxColumn="true"
+                                                 keyField="Id" 
+                                                 />
+                        </div>
+                    </aura:if>  
+                </div>                             
+            </div>   
+         </div>
+         <div>
+         <div class="slds-page-header" role="banner">
+             <span class="slds-text-heading_medium">Customer List</span>       
+         </div>
+         <div>
+             <lightning:datatable columns="{!v.customerColumns}"
+                                  data="{!v.customerData}"
+                                  hideCheckboxColumn="true"
+                                  keyField="Id"
+                                  onsort="{!c.updateColumnSorting}"
+                                  sortedBy="{!v.sortedBy}"  
+                                  sortedDirection="{!v.sortedDirection}"
+                                  />
+             </div>
+         </div>
+        </div>
+</aura:component>
